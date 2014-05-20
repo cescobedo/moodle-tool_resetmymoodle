@@ -23,7 +23,7 @@ git clone git@github.com:cescobedo/moodle-tool_resetmymoodle.git admin/tool/rese
 Download way
 - Download the zip from <https://github.com/cescobedo/moodle-tool_resetmymoodle/archive/master.zip>
 - Unzip it into  admin/tool/ folder in your Moodle,
-- Rename the new folder "moodle-tool_resetmymoodle" to "resetmymoodle"
+- Rename the new folder "moodle-tool_resetmymoodle-master" to "resetmymoodle"
 - Enjoy!!!
 
 FUTURE SCOPE:
