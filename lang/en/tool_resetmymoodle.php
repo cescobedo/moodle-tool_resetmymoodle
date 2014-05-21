@@ -27,4 +27,4 @@ $string['pageheader'] = 'Reset My Moodle';
 $string['resetok'] = 'Reset operation: {$a} Users has been reset.';
 $string['nopages'] = 'Reset operation: NO My Moodles Users.';
 $string['warning'] = 'WARNING: This tool allow you reset all MyMoodle preferences
-in all users in the Navy except Main ADMIN User.';
+in all users except Main ADMIN User.';
