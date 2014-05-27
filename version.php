@@ -28,3 +28,4 @@ $plugin->version   = 2014051600;
 $plugin->requires  = 2013111800;
 $plugin->component = 'tool_resetmymoodle';
 $plugin->maturity = MATURITY_STABLE;
+$plugin->release = '1.0';
