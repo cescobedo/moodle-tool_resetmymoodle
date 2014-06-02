@@ -9,19 +9,13 @@ It's useful to developers and main administrators.
 
 Version  
 -------
-Moodle 2.4 - No maintenance
+Moodle 2.4 - No Maintenance
 
 TO INSTALL:
 
-Git way
-- To install it using git, type this command in the root of your Moodle install:
-```
-git clone git@github.com:cescobedo/moodle-tool_resetmymoodle.git admin/tool/resetmymoodle
-```
-
 
 Download way
-- Download the zip from <https://github.com/cescobedo/moodle-tool_resetmymoodle/archive/master.zip>
+- Download the zip from <https://github.com/cescobedo/moodle-tool_resetmymoodle/archive/MOODLE24_stable.zip>
 - Unzip it into  admin/tool/ folder in your Moodle,
 - Rename the new folder "moodle-tool_resetmymoodle-master" to "resetmymoodle"
 - Enjoy!!!
