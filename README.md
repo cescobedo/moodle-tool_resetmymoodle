@@ -9,7 +9,7 @@ It's useful to developers and main administrators.
 
 Version  
 -------
-Moodle 2.7+ and 2.6+
+Moodle 2.4 - No maintenance
 
 TO INSTALL:
 
@@ -26,10 +26,6 @@ Download way
 - Rename the new folder "moodle-tool_resetmymoodle-master" to "resetmymoodle"
 - Enjoy!!!
 
-FUTURE SCOPE:
-- Refactor to 2.7+ to use new reset functions in my/lib.php
-- Use new system Logs.
-- Select specifics users.
 
 Author
 ------
