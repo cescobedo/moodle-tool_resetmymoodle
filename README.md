@@ -43,8 +43,9 @@ Carlos Escobedo
 - <http://www.twitter.com/carlosagile>
 - <https://coderwall.com/carlosagile>
 
-Edits to upgrade the code for Moodle 2.9:
+Thanks to: 
 
-Paul Vaughan
+Paul Vaughan for  upgrade the code for Moodle 2.9
+
 - <http://www.twitter.com/sdcmoodle>
 - <https://github.com/sdc> 
