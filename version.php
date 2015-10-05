@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2015100200;
-$plugin->requires  = 2015051100;
+$plugin->requires  = 2014111000;
 $plugin->component = 'tool_resetmymoodle';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.1';
