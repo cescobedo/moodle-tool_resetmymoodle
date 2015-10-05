@@ -24,6 +24,8 @@
 
 require('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once( '../../../my/lib.php' );
+
 global $DB;
 
 admin_externalpage_setup('toolresetmymoodle');
@@ -53,20 +55,14 @@ echo $OUTPUT->box_start();
 $siteadmins = explode(',', $CFG->siteadmins);
 $myadminid = $siteadmins[0];
 
-$sql = "SELECT u.*, mp.id as myid
-        FROM {my_pages} mp,
-        {user} u
-        where u.id = mp.userid
-        and mp.userid is not null
-        and u.id <> ?";
-if ($myusers = $DB->get_records_sql($sql, array($myadminid))) {
+if ( $users = $DB->get_records( 'user' ) ) {
     $countusers = 0;
-    foreach ($myusers as $myuser) {
-        // Delete mypage user.
-        $DB->delete_records('my_pages', array('userid' => $myuser->id));
-        // Delete blocks user.
-        $DB->delete_records('block_instances', array('subpagepattern' => $myuser->myid));
-        $countusers = $countusers + 1;
+    foreach ($users as $user) {
+        if ($user->id != $myadminid) {
+            // Call internal Moodle function to reset the user.
+            my_reset_page( $user->id );
+            $countusers++;
+        }
     }
     echo $OUTPUT->notification(get_string('resetok', 'tool_resetmymoodle', $countusers), 'notifysuccess');
 } else {

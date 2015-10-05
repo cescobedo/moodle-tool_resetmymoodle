@@ -24,7 +24,6 @@
 
 $string['pluginname'] = 'Reset MyMoodle';
 $string['pageheader'] = 'Reset My Moodle';
-$string['resetok'] = 'Reset operation: {$a} Users has been reset.';
-$string['nopages'] = 'Reset operation: NO My Moodles Users.';
-$string['warning'] = 'WARNING: This tool allow you reset all MyMoodle preferences
-in all users except Main ADMIN User.';
+$string['resetok'] = 'Reset operation: {$a} users have been reset.';
+$string['nopages'] = 'Reset operation: NO My Moodle users were reset.';
+$string['warning'] = 'WARNING: This tool will reset all MyMoodle preferences in all users except the main Admin user.';
