@@ -7,6 +7,12 @@ This admin tool allows you to reset all 'My Moodle' pages for all users, except 
 
 It's useful to developers and main administrators.
 
+# New features
+
+- Exclude/Include guests users.
+- Exclude/Include deleted users.
+- Show and download log.
+
 
 ## Version  
 
@@ -33,8 +39,7 @@ git clone git@github.com:cescobedo/moodle-tool_resetmymoodle.git admin/tool/rese
 
 ## Future Scope
 
-- Use new system Logs.
-- Select or exclude specifics users.
+- Bulk actions.
 
 
 ## Author
@@ -43,9 +48,8 @@ Carlos Escobedo
 - <http://www.twitter.com/carlosagile>
 - <https://coderwall.com/carlosagile>
 
-Thanks to: 
+Edits to upgrade the code for Moodle 2.9:
 
-Paul Vaughan for  upgrade the code for Moodle 2.9
-
+Paul Vaughan
 - <http://www.twitter.com/sdcmoodle>
 - <https://github.com/sdc> 

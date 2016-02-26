@@ -25,50 +25,106 @@
 require('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once( '../../../my/lib.php' );
+require_once($CFG->dirroot.'/lib/tablelib.php');
 
 global $DB;
 
-admin_externalpage_setup('toolresetmymoodle');
+admin_externalpage_setup('toolresetmymoodlelaunch');
 
 require_login();
 require_capability('moodle/site:config', context_system::instance());
 
-$reset = optional_param('reset', 0, PARAM_INT);
+$reset      = optional_param('reset', 0, PARAM_INT);
+$download   = optional_param('download', '', PARAM_ALPHA);
+$settings   = get_config('toolresetmymoodle');
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pageheader', 'tool_resetmymoodle'));
+$table = new flexible_table('toolresetmymoodleid');
+$exportfilename = 'logresetmy_' . userdate(time(),
+    get_string('backupnameformat', 'langconfig'), 99, false);
 
-if (!$reset or !confirm_sesskey()) {
-    echo $OUTPUT->notification(get_string('warning', 'tool_resetmymoodle'));
+// Check is download LOG.
+if (!$table->is_downloading($download, $exportfilename)) {
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('pageheader', 'tool_resetmymoodle'));
+    if (!$reset or !confirm_sesskey()) {
+        echo $OUTPUT->notification(get_string('warning', 'tool_resetmymoodle'));
 
+        echo $OUTPUT->box_start();
+        echo $OUTPUT->continue_button(new moodle_url('/admin/tool/resetmymoodle/index.php',
+            array('reset' => 1, 'sesskey' => sesskey())));
+        echo $OUTPUT->box_end();
+        echo $OUTPUT->footer();
+        die;
+    }
     echo $OUTPUT->box_start();
-    echo $OUTPUT->continue_button(new moodle_url('/admin/tool/resetmymoodle/index.php',
-        array('reset' => 1, 'sesskey' => sesskey())));
-    echo $OUTPUT->box_end();
-    echo $OUTPUT->footer();
-    die;
 }
 
-echo $OUTPUT->box_start();
-
-// GET Main admin.
+// GET Main admins.
 $siteadmins = explode(',', $CFG->siteadmins);
 $myadminid = $siteadmins[0];
 
-if ( $users = $DB->get_records( 'user' ) ) {
+// Set params.
+$params = array();
+// Include deleted users into reset MyMoodle.
+if (!$settings->deletedusers) {
+    $params['deleted'] = 0;
+}
+
+// Raise more memory if its necessary.
+if ($settings->memoryextra <> MEMORY_STANDARD) {
+    raise_memory_limit($settings->memoryextra);
+}
+
+if ($settings->showlog || $table->is_downloading($download, $exportfilename)) {
+    // Setup Table to show log.
+    $table->define_baseurl($PAGE->url);
+    $table->define_columns(array('id', 'fullname', 'email'));
+    $table->define_headers(array('id',  get_string('fullname'), get_string('email')));
+    $table->set_attribute('class', 'generaltable generalbox boxaligncenter ');
+    $table->is_downloadable(true);
+    $table->show_download_buttons_at(array(TABLE_P_BOTTOM));
+    $table->setup();
+}
+
+if ($users = $DB->get_records('user', $params)) {
     $countusers = 0;
+    $datatable = array();
     foreach ($users as $user) {
-        if ($user->id != $myadminid) {
-            // Call internal Moodle function to reset the user.
-            my_reset_page( $user->id );
-            $countusers++;
+        $row = array();
+        $condition = ($user->id != $myadminid);
+        // Incude guest users into reset MyMoodle.
+        if (!$settings->includeguests) {
+            $condition = ($condition && !isguestuser($user->id));
+        }
+        if ($condition) {
+            if (!$table->is_downloading($download, $exportfilename)) {
+                // Call internal Moodle function to reset the user.
+                my_reset_page($user->id);
+                $countusers++;
+            }
+            
+            if ($settings->showlog || $table->is_downloading($download, $exportfilename)) {
+                $row[] = $user->id;
+                $row[] = fullname($user);
+                $row[] = $user->email;
+                $table->add_data($row);
+            }   
         }
     }
-    echo $OUTPUT->notification(get_string('resetok', 'tool_resetmymoodle', $countusers), 'notifysuccess');
+    if ($settings->showlog) {
+        $table->finish_output();
+    }    
+    if (!$table->is_downloading($download, $exportfilename)) {
+        echo $OUTPUT->notification(get_string('resetok', 'tool_resetmymoodle', $countusers), 'notifysuccess');
+    }
 } else {
-    echo $OUTPUT->notification(get_string('nopages', 'tool_resetmymoodle'), 'notifysuccess');
+    if (!$table->is_downloading($download, $exportfilename)) {
+        echo $OUTPUT->notification(get_string('nopages', 'tool_resetmymoodle'), 'notifysuccess');
+    }
 }
-echo $OUTPUT->box_end();
+if (!$table->is_downloading($download, $exportfilename)) {
+    echo $OUTPUT->box_end();
 
-echo $OUTPUT->continue_button(new moodle_url('/admin/tool/resetmymoodle/index.php', array('reset' => 0)));
-echo $OUTPUT->footer();
+    echo $OUTPUT->continue_button(new moodle_url('/admin/tool/resetmymoodle/index.php', array('reset' => 0)));
+    echo $OUTPUT->footer();
+}
